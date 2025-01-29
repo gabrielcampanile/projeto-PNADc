@@ -7,12 +7,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# st.sidebar.page_link("streamlit_app.py", label="Início", icon="🏠")
-# st.sidebar.page_link("pages/1_Historico.py", label="Histórico", icon="📊")
-# st.sidebar.page_link("pages/2_Regional.py", label="Regional", icon="⚙️")
-# st.sidebar.page_link("pages/3_Mapas.py", label="Mapas", icon="⚙️")
-# st.sidebar.page_link("pages/4_Projecoes.py", label="Projeções", icon="⚙️")
-
 st.title("Análise de Pobreza Extrema no Brasil")
 
 st.markdown("""
@@ -21,7 +15,7 @@ com projeções até 2030. Os dados são analisados em diferentes níveis e pers
 
 Utilize o menu lateral para explorar as diferentes análises:
 
-1. **Histórico**: Evolução temporal da pobreza extrema e comparativo entre regiões e estados
+1. **Análises**: Evolução temporal da pobreza extrema e comparativo entre regiões e estados
 2. **Mapas**: Visualização geográfica da distribuição
 3. **Resultados**: Tabelas e gráficos dos resultados obtidos
 """)
