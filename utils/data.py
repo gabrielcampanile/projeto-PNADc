@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline
-import seaborn as sns
 import geopandas as gpd
 from scipy.stats import linregress
 
