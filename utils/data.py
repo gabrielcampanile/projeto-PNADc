@@ -1,9 +1,11 @@
+import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import CubicSpline
 import geopandas as gpd
 from scipy.stats import linregress
+from io import BytesIO
 
 # Dados atualizados
 data_com_beneficio = {
@@ -44,6 +46,14 @@ regions = {
     'Sudeste': ['MG', 'ES', 'RJ', 'SP'],
     'Sul': ['PR', 'SC', 'RS']
 }
+
+# Função para salvar figura em bytes
+def save_fig_to_bytes(fig):
+    """Convert matplotlib figure to bytes for download"""
+    buf = BytesIO()
+    fig.savefig(buf, format='png', bbox_inches='tight', dpi=300)
+    buf.seek(0)
+    return buf
 
 # Funções de plotagem e análise
 def plot_national_comparison(with_benefits=True):
@@ -126,7 +136,7 @@ def create_poverty_map(year, with_benefits=True):
                missing_kwds={'color': 'lightgrey'})
     ax.axis('off')
     ax.set_title(f'Pobreza Extrema por Estado - {year}\n({("Com" if with_benefits else "Sem")} Benefícios)')
-    
+
     return fig
 
 def calculate_projection(local_type, name=None, with_benefits=True):

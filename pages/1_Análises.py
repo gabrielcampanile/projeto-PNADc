@@ -1,26 +1,27 @@
 import streamlit as st
+from io import BytesIO
 from utils.data import *
 
 st.set_page_config(page_title="Análises", page_icon="📈")
 
 st.title("Histórico de Pobreza Extrema")
 
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3, gap="large")
 
 with col1:
-    benefits = st.radio(
-        "Análise considerando benefícios sociais:",
-        ["Com Benefícios", "Sem Benefícios"],
-        index=0
-    )
-
-with col2:
     view_level = st.radio(
         "Nível de análise:",
         ["Nacional", "Regional"],
         index=0
     )
 
+with col2:
+    benefits = st.radio(
+        "Análise de benefícios sociais:",
+        ["Com benefícios", "Sem benefícios"],
+        index=0
+    )
+    
 if view_level == "Regional":
     region = st.selectbox(
         "Selecione a região:",
@@ -30,8 +31,17 @@ if view_level == "Regional":
 else:
     fig = plot_national_comparison(benefits == "Com Benefícios")
 
-st.pyplot(fig)
+with col3:
+    buf = save_fig_to_bytes(fig)
+    st.download_button(
+        label="Download Gráfico",
+        data=buf,
+        file_name=f"analise_pobreza_{view_level.lower()}_{'com' if benefits == 'Com Benefícios' else 'sem'}_beneficios.png",
+        mime="image/png",
+        key=f"download_{view_level}"
+    )
 
+st.pyplot(fig)
 
 # Add metrics section
 if view_level == "Regional":

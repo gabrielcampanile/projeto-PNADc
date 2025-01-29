@@ -2,6 +2,10 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+def get_excel_file_as_bytes(file_path):
+    with open(file_path, 'rb') as f:
+        return f.read()
+
 # Data with benefits
 data_com_beneficios = {
     'Local': ['Brasil', 'Norte', 'RO', 'AC', 'AM', 'RR', 'PA', 'AP', 'TO', 'Nordeste', 'MA', 'PI', 'CE', 'RN', 'PB', 'PE', 'AL', 'SE', 'BA', 'Sudeste', 'MG', 'ES', 'RJ', 'SP', 'Sul', 'PR', 'SC', 'RS', 'Centro-Oeste', 'MS', 'MT', 'GO', 'DF'],
@@ -34,14 +38,14 @@ with tab1:
     st.subheader('Análise com Benefícios Sociais')
     st.dataframe(df_com_beneficios)
     
-    # Download button
-    csv_com = df_com_beneficios.to_csv(index=False).encode('utf-8')
+    # Download Excel file
+    excel_com = get_excel_file_as_bytes("data/resultados_com_beneficios.xlsx")
     st.download_button(
-        "Download dados (CSV)",
-        csv_com,
-        "dados_com_beneficios.csv",
-        "text/csv",
-        key='download-csv-com'
+        "Download dados (Excel)",
+        excel_com,
+        "resultados_com_beneficios.xlsx",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        key='download-excel-com'
     )
     
     # Visualization
@@ -56,14 +60,14 @@ with tab2:
     st.subheader('Análise sem Benefícios Sociais')
     st.dataframe(df_sem_beneficios)
     
-    # Download button
-    csv_sem = df_sem_beneficios.to_csv(index=False).encode('utf-8')
+    # Download Excel file
+    excel_sem = get_excel_file_as_bytes("data/resultados_sem_beneficios.xlsx")
     st.download_button(
-        "Download dados (CSV)",
-        csv_sem,
-        "dados_sem_beneficios.csv",
-        "text/csv",
-        key='download-csv-sem'
+        "Download dados (Excel)",
+        excel_sem,
+        "resultados_sem_beneficios.xlsx",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        key='download-excel-sem'
     )
     
     # Visualization
