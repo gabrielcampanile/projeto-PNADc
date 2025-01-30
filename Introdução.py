@@ -15,9 +15,11 @@ com projeções até 2030. Os dados são analisados em diferentes níveis e pers
 
 Utilize o menu lateral para explorar as diferentes análises:
 
-1. **Análises**: Evolução temporal da pobreza extrema e comparativo entre regiões e estados
-2. **Mapas**: Visualização geográfica da distribuição
-3. **Resultados**: Tabelas e gráficos dos resultados obtidos
+1. **Apresentação**: Introdução e métricas principais
+2. **Análises**: Evolução temporal da pobreza extrema e comparativo entre regiões e estados
+3. **Mapas**: Visualização geográfica da distribuição
+4. **Resultados**: Tabelas e gráficos dos resultados obtidos
+5. **Relatório**: Relatório completo com todas as análises
 """)
 
 # Métricas principais
