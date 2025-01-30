@@ -3,7 +3,7 @@ import base64
 
 st.set_page_config(page_title="Relatório ODS", page_icon="📄")
 
-st.warning("🚧 Em breve: O relatório completo será disponibilizado em breve! 🚧")
+st.warning("##### 🚧 O relatório completo será disponibilizado em breve! 🚧")
 
 st.markdown("---")
 

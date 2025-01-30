@@ -23,3 +23,14 @@ Utilize o menu lateral para explorar as diferentes visualizações disponíveis:
 6. **Relatório**: Relatório completo com todas as análises
 """)
 
+# st.markdown("---")
+
+# st.markdown("""
+# <div style="text-align: center; padding: 10px;">
+#     <p>Desenvolvido por Gabriel Belchior</p>
+#     <p>
+#         <a href="https://github.com/gabrielcampanile" target="_blank">GitHub</a> | 
+#         <a href="https://www.linkedin.com/in/gabriel-belchior-campanile/">LinkedIn</a>
+#     </p>
+# </div>
+# """, unsafe_allow_html=True)
