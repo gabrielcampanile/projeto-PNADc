@@ -22,10 +22,17 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Download button
+# Caminho do arquivo PDF
+pdf_path = "data/ODS1_ErradicarPobreza.pdf"
+
+# Ler o arquivo PDF
+with open(pdf_path, "rb") as pdf_file:
+    pdf_bytes = pdf_file.read()
+
+# Botão de download
 st.download_button(
     label="📥 Download Apresentação",
-    data=apresentacao_link,
-    file_name="apresentacao_ods.pdf",
+    data=pdf_bytes,
+    file_name="ODS1_ErradicarPobreza.pdf",
     mime="application/pdf"
 )
