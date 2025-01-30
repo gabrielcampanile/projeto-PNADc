@@ -110,14 +110,23 @@ def plot_region_comparison(region_name, with_benefits=True):
     
     return fig
 
-def create_poverty_map(year, with_benefits=True):
+def create_poverty_map(year, with_benefits=True, show_projection=False):
     df = df_com_beneficio if with_benefits else df_sem_beneficio
     
     # Carregar shapefile
     states = gpd.read_file('data/BR_UF_2022/BR_UF_2022.shp')
     
     # Preparar dados para o mapa
-    state_values = df[df['Local'].isin(sum(regions.values(), []))][['Local', str(year)]].set_index('Local').to_dict()[str(year)]
+    if show_projection:
+        # Calcular projeções 2030 para cada estado
+        state_values = {}
+        for state in sum(regions.values(), []):
+            metrics = calculate_projection('Estadual', state, with_benefits)
+            state_values[state] = metrics['projection_2030']
+        year_display = '2030 (Projeção)'
+    else:
+        state_values = df[df['Local'].isin(sum(regions.values(), []))][['Local', str(year)]].set_index('Local').to_dict()[str(year)]
+        year_display = year
     
     states['poverty'] = states['SIGLA_UF'].map(state_values)
     
@@ -135,7 +144,7 @@ def create_poverty_map(year, with_benefits=True):
                cmap='YlOrRd',
                missing_kwds={'color': 'lightgrey'})
     ax.axis('off')
-    ax.set_title(f'Pobreza Extrema por Estado - {year}\n({("Com" if with_benefits else "Sem")} Benefícios)')
+    ax.set_title(f'Pobreza Extrema por Estado - {year_display}\n({("Com" if with_benefits else "Sem")} Benefícios)')
 
     return fig
 
