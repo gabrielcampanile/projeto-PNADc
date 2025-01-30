@@ -173,3 +173,113 @@ def calculate_projection(local_type, name=None, with_benefits=True):
         "required_reduction": required_reduction,
         "projection_2030": projection_2030
     }
+
+def plot_national_projection(with_benefits=True):
+    df = df_com_beneficio if with_benefits else df_sem_beneficio
+    
+    # Setup years and interpolation
+    historical_years = np.array([int(year) for year in df.columns if year != 'Local'])
+    future_years = np.array(range(2024, 2031))
+    all_years = np.concatenate([historical_years, future_years])
+    x_smooth = np.linspace(2015, 2030, 300)
+    
+    fig, ax = plt.subplots(figsize=(15, 10))
+    
+    # Plot each region
+    regions_to_plot = ['Brasil', 'Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul']
+    colors = {'Brasil': 'black', 'Norte': 'green', 'Nordeste': 'red', 
+              'Centro-Oeste': 'orange', 'Sudeste': 'blue', 'Sul': 'purple'}
+    
+    for region in regions_to_plot:
+        # Get historical data
+        data = df[df['Local'] == region].iloc[:, 1:].values.flatten()
+        
+        # Calculate projection
+        slope, intercept, _, _, _ = linregress(historical_years, data)
+        projected = np.maximum(slope * future_years + intercept, 0)
+        all_data = np.concatenate([data, projected])
+        
+        # Create smooth curve
+        cs = CubicSpline(all_years, all_data)
+        mask_historical = x_smooth <= 2023
+        mask_projected = x_smooth > 2023
+        
+        # Plot historical data
+        ax.plot(x_smooth[mask_historical], cs(x_smooth[mask_historical]), 
+                color=colors[region], label=region, linewidth=2)
+        ax.scatter(historical_years, data, color=colors[region], s=50)
+        
+        # Plot projection
+        ax.plot(x_smooth[mask_projected], cs(x_smooth[mask_projected]), 
+                '--', color=colors[region], alpha=0.7, linewidth=2)
+    
+    # Add vertical line at 2023
+    ax.axvline(x=2023, color='gray', linestyle=':', alpha=0.5)
+    
+    # Configure plot
+    ax.set_title(f'Projeções de Pobreza Extrema (2015-2030)\n({("Com" if with_benefits else "Sem")} Benefícios)')
+    ax.set_xlabel('Ano')
+    ax.set_ylabel('Percentual de Pobreza Extrema (%)')
+    ax.grid(True, alpha=0.3)
+    ax.legend(fontsize='small')
+    plt.tight_layout()
+    
+    return fig
+
+def plot_region_projection(region_name, states_list, with_benefits=True):
+    df = df_com_beneficio if with_benefits else df_sem_beneficio
+    
+    # Setup years and interpolation
+    historical_years = np.array([int(year) for year in df.columns if year != 'Local'])
+    future_years = np.array(range(2024, 2031))
+    all_years = np.concatenate([historical_years, future_years])
+    x_smooth = np.linspace(2015, 2030, 300)
+    
+    fig, ax = plt.subplots(figsize=(15, 10))
+    
+    # Plot states with light lines
+    for state in states_list:
+        data = df[df['Local'] == state].iloc[:, 1:].values.flatten()
+        slope, intercept, _, _, _ = linregress(historical_years, data)
+        projected = np.maximum(slope * future_years + intercept, 0)
+        all_data = np.concatenate([data, projected])
+        
+        cs = CubicSpline(all_years, all_data)
+        mask_historical = x_smooth <= 2023
+        mask_projected = x_smooth > 2023
+        
+        ax.plot(x_smooth[mask_historical], cs(x_smooth[mask_historical]), 
+                alpha=0.3)
+        ax.plot(x_smooth[mask_projected], cs(x_smooth[mask_projected]), 
+                '--', alpha=0.3)
+        ax.scatter(historical_years, data, label=state, s=30)
+    
+    # Plot national and regional data with bold lines
+    for name, color in [('Brasil', 'blue'), (region_name, 'red')]:
+        data = df[df['Local'] == name].iloc[:, 1:].values.flatten()
+        slope, intercept, _, _, _ = linregress(historical_years, data)
+        projected = np.maximum(slope * future_years + intercept, 0)
+        all_data = np.concatenate([data, projected])
+        
+        cs = CubicSpline(all_years, all_data)
+        mask_historical = x_smooth <= 2023
+        mask_projected = x_smooth > 2023
+        
+        ax.plot(x_smooth[mask_historical], cs(x_smooth[mask_historical]), 
+                color=color, label=name, linewidth=2)
+        ax.scatter(historical_years, data, color=color, s=50)
+        ax.plot(x_smooth[mask_projected], cs(x_smooth[mask_projected]), 
+                '--', color=color, alpha=0.7, linewidth=2)
+    
+    # Add vertical line at 2023
+    ax.axvline(x=2023, color='gray', linestyle=':', alpha=0.5)
+    
+    # Configure plot
+    ax.set_title(f'Região {region_name}\nPobreza Extrema (2015-2030)\n({("Com" if with_benefits else "Sem")} Benefícios)')
+    ax.set_xlabel('Ano')
+    ax.set_ylabel('Percentual de Pobreza Extrema (%)')
+    ax.grid(True, alpha=0.3)
+    ax.legend(fontsize='small', bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.tight_layout()
+    
+    return fig
