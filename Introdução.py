@@ -2,7 +2,7 @@ import streamlit as st
 from utils.data import *
 
 st.set_page_config(
-    page_title="Análise de Pobreza Extrema",
+    page_title="Introdução",
     page_icon="📊",
     layout="wide"
 )

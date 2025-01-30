@@ -1,5 +1,4 @@
 import streamlit as st
-from io import BytesIO
 from utils.data import *
 
 st.set_page_config(page_title="Análises", page_icon="📈")
@@ -17,8 +16,8 @@ with col1:
 
 with col2:
     benefits = st.radio(
-        "Análise de benefícios sociais:",
-        ["Com benefícios", "Sem benefícios"],
+        "Tipo de Análise:",
+        ["Com Benefícios", "Sem Benefícios"],
         index=0
     )
     
@@ -41,9 +40,11 @@ with col3:
         key=f"download_{view_level}"
     )
 
+# st.plotly_chart(fig)
 st.pyplot(fig)
 
-# Add metrics section
+
+# Update metrics calculation
 if view_level == "Regional":
     metrics = calculate_projection("Regional", region, benefits == "Com Benefícios")
     region_name = region

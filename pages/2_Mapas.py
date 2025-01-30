@@ -19,12 +19,12 @@ with col1:
 
 with col2:
     benefits = st.radio(
-        "Análise de benefícios sociais:",
-        ["Com benefícios", "Sem benefícios"],
+        "Tipo de Análise:",
+        ["Com Benefícios", "Sem Benefícios"],  # Match exact strings used in comparison
         index=0
     )
 
-fig = create_poverty_map(year, benefits == "Com Benefícios")
+fig = create_poverty_map(year, benefits == "Com Benefícios")  # Match exact string
 
 with col3:
     buf = save_fig_to_bytes(fig)
