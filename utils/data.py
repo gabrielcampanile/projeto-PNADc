@@ -152,10 +152,11 @@ def calculate_projection(local_type, name=None, with_benefits=True):
     
     slope, intercept, _, _, _ = linregress(years, data)
     
-    current_rate = data[-1]
-    observed_reduction = -slope
-    projection_2030 = max(0, slope * 2030 + intercept)
-    required_reduction = current_rate / (2030 - 2023)
+    current_rate = data[-1]  # Taxa atual (2023)
+    observed_reduction = -slope  # Taxa de redução anual observada (mantém sinal negativo para crescimento)
+    years_until_2030 = 2030 - 2023
+    projection_2030 = max(0, current_rate + (slope * years_until_2030))  # Projeção a partir da taxa atual
+    required_reduction = current_rate / years_until_2030  # Taxa necessária para zerar até 2030
     
     return {
         "current_rate": current_rate,
