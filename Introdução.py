@@ -23,26 +23,3 @@ Utilize o menu lateral para explorar as diferentes visualizações disponíveis:
 6. **Relatório**: Relatório completo com todas as análises
 """)
 
-# # Métricas principais
-# col1, col2, col3 = st.columns(3)
-
-# national_metrics = calculate_projection("Nacional")
-# with col1:
-#     st.metric(
-#         label="Taxa Nacional 2023",
-#         value=f"{national_metrics['current_rate']:.2f}%",
-#         delta=f"{-national_metrics['observed_reduction']:.2f}%",
-#         delta_color="inverse"
-#     )
-
-# with col2:
-#     st.metric(
-#         label="Projeção Nacional 2030",
-#         value=f"{national_metrics['projection_2030']:.2f}%"
-#     )
-
-# with col3:
-#     st.metric(
-#         label="Redução Anual Necessária",
-#         value=f"{national_metrics['required_reduction']:.2f}%"
-#     )
