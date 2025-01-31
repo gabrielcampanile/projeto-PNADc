@@ -6,7 +6,7 @@ st.title("📢 Apresentação ODS - Erradicação da Pobreza")
 st.write("Aqui você pode visualizar a apresentação diretamente ou baixá-lo como PDF.")
 
 # Link da apresentação
-apresentacao_link = "https://drive.google.com/file/d/1ZRXZ9UQnHQIJDEAf55qzIeOPibQ91UjJ/view?usp=sharing"
+apresentacao_link = "https://drive.google.com/file/d/1LFPZSX2velhiRDs5hcShscMTRdfb59_w/view?usp=sharing"
 
 # # Link para visualização externa
 # st.markdown(f"[📑 Acesse a apresentação aqui](https://projeto-pnadc.my.canva.site/)", unsafe_allow_html=True)
