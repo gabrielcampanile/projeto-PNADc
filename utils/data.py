@@ -194,9 +194,15 @@ def plot_national_projection(with_benefits=True):
         # Get historical data
         data = df[df['Local'] == region].iloc[:, 1:].values.flatten()
         
-        # Calculate projection
-        slope, intercept, _, _, _ = linregress(historical_years, data)
-        projected = np.maximum(slope * future_years + intercept, 0)
+        # Get projection from calculate_projection
+        metrics = calculate_projection("Regional", region, with_benefits)
+        projected_2030 = metrics['projection_2030']
+        
+        # Create interpolation points between 2023 and 2030
+        current_rate = data[-1]
+        years_until_2030 = 7
+        slope = (projected_2030 - current_rate) / years_until_2030
+        projected = np.array([current_rate + slope * i for i in range(1, 8)])
         all_data = np.concatenate([data, projected])
         
         # Create smooth curve
@@ -204,12 +210,10 @@ def plot_national_projection(with_benefits=True):
         mask_historical = x_smooth <= 2023
         mask_projected = x_smooth > 2023
         
-        # Plot historical data
+        # Plot historical data and projection
         ax.plot(x_smooth[mask_historical], cs(x_smooth[mask_historical]), 
                 color=colors[region], label=region, linewidth=2)
         ax.scatter(historical_years, data, color=colors[region], s=50)
-        
-        # Plot projection
         ax.plot(x_smooth[mask_projected], cs(x_smooth[mask_projected]), 
                 '--', color=colors[region], alpha=0.7, linewidth=2)
     
@@ -239,26 +243,39 @@ def plot_region_projection(region_name, states_list, with_benefits=True):
     
     # Plot states with light lines
     for state in states_list:
+        # Get historical data
         data = df[df['Local'] == state].iloc[:, 1:].values.flatten()
-        slope, intercept, _, _, _ = linregress(historical_years, data)
-        projected = np.maximum(slope * future_years + intercept, 0)
+        
+        # Get projection from calculate_projection
+        metrics = calculate_projection("Estadual", state, with_benefits)
+        projected_2030 = metrics['projection_2030']
+        
+        # Create interpolation points between 2023 and 2030
+        current_rate = data[-1]
+        years_until_2030 = 7
+        slope = (projected_2030 - current_rate) / years_until_2030
+        projected = np.array([current_rate + slope * i for i in range(1, 8)])
         all_data = np.concatenate([data, projected])
         
         cs = CubicSpline(all_years, all_data)
         mask_historical = x_smooth <= 2023
         mask_projected = x_smooth > 2023
         
-        ax.plot(x_smooth[mask_historical], cs(x_smooth[mask_historical]), 
-                alpha=0.3)
-        ax.plot(x_smooth[mask_projected], cs(x_smooth[mask_projected]), 
-                '--', alpha=0.3)
+        ax.plot(x_smooth[mask_historical], cs(x_smooth[mask_historical]), alpha=0.3)
+        ax.plot(x_smooth[mask_projected], cs(x_smooth[mask_projected]), '--', alpha=0.3)
         ax.scatter(historical_years, data, label=state, s=30)
     
     # Plot national and regional data with bold lines
     for name, color in [('Brasil', 'blue'), (region_name, 'red')]:
         data = df[df['Local'] == name].iloc[:, 1:].values.flatten()
-        slope, intercept, _, _, _ = linregress(historical_years, data)
-        projected = np.maximum(slope * future_years + intercept, 0)
+        
+        metrics = calculate_projection("Regional", name, with_benefits)
+        projected_2030 = metrics['projection_2030']
+        
+        current_rate = data[-1]
+        years_until_2030 = 7
+        slope = (projected_2030 - current_rate) / years_until_2030
+        projected = np.array([current_rate + slope * i for i in range(1, 8)])
         all_data = np.concatenate([data, projected])
         
         cs = CubicSpline(all_years, all_data)
