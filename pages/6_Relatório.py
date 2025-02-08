@@ -1,44 +1,35 @@
 import streamlit as st
-import base64
 
 st.set_page_config(page_title="Relatório ODS", page_icon="📄")
 
-st.warning("##### 🚧 O relatório completo será disponibilizado em breve! 🚧")
-
-st.markdown("---")
-
-# Informações adicionais
-st.info("""
-### O que estará disponível:
-- 📊 Análise completa dos dados
-- 📈 Projeções detalhadas
-- 📑 Metodologia utilizada
-- 📌 Conclusões e recomendações
-
-Fique atento para atualizações!
-""")
-
-st.markdown("---")
-
-st.title("📄 Relatório ODS 1 - Erradicação da Pobreza")
+st.title("📄 Relatório ODS - Erradicação da Pobreza")
 st.write("Aqui você pode visualizar o relatório diretamente ou baixá-lo como PDF.")
 
-# # Caminho do arquivo PDF
-# pdf_path = "data/relatorio.pdf"
+# Link do relatório no Google Drive
+relatorio_link = "https://drive.google.com/file/d/1WdMvK1Td-fdF-nwHHrRNbtfl2AeA_QbQ/view?usp=sharing"
 
-# # Ler e converter PDF para base64
-# with open(pdf_path, "rb") as pdf_file:
-#     pdf_bytes = pdf_file.read()
-#     base64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
+# Exibir iframe
+pdf_embed_link = relatorio_link.replace("/view", "/preview")
+st.markdown(
+    f"""
+    <iframe id="reportFrame" src="{pdf_embed_link}" 
+            width="800" height="1120" style="border: none;">
+    </iframe>
+    """,
+    unsafe_allow_html=True,
+)
 
-# # Exibir PDF usando HTML
-# pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800" type="application/pdf"></iframe>'
-# st.markdown(pdf_display, unsafe_allow_html=True)
+# Caminho do arquivo PDF local
+pdf_path = "data/Erradicação_da_Extrema_Pobreza.pdf"
 
-# # Adicionar botão de download
-# st.download_button(
-#     label="📥 Download PDF",
-#     data=pdf_bytes,
-#     file_name="relatorio_ods.pdf",
-#     mime="application/pdf"
-# )
+# Ler arquivo PDF
+with open(pdf_path, "rb") as pdf_file:
+    pdf_bytes = pdf_file.read()
+
+# Botão de download
+st.download_button(
+    label="📥 Download Relatório",
+    data=pdf_bytes,
+    file_name="Erradicação_da_Extrema_Pobreza.pdf",
+    mime="application/pdf"
+)
